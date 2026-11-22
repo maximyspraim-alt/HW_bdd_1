@@ -18,12 +18,15 @@ public class DashboardPage {
     }
 
     public int getBalance(String cardNumber) {
-        String text = getCardByNumber(cardNumber).getText();
-        // Текст вида "**** **** **** 0001, баланс: 10000 р."
-        String balanceStr = text.replaceAll(".*баланс:\\s*", "")
-                .replaceAll("\\s*р\\..*", "")
-                .replaceAll("\\s", "");
-        return Integer.parseInt(balanceStr);
+        String text = getCardByNumber(cardNumber).getText()
+                .replace('\u00A0', ' '); // неразрывные пробелы → обычные
+        java.util.regex.Matcher m = java.util.regex.Pattern
+                .compile("баланс:\\s*(-?\\d+)")
+                .matcher(text);
+        if (m.find()) {
+            return Integer.parseInt(m.group(1));
+        }
+        throw new IllegalStateException("Не удалось извлечь баланс из текста: [" + text + "]");
     }
 
     public void clickDeposit(String cardNumber) {
