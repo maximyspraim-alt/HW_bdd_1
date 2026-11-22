@@ -1,5 +1,7 @@
 # Домашнее задание «2.4. BDD» — Задача №1: Page Object's
 
+[![Java CI with Gradle](https://github.com/maximyspraim-alt/HW_bdd_1/actions/workflows/gradle.yml/badge.svg)](https://github.com/maximyspraim-alt/HW_bdd_1/actions/workflows/gradle.yml)
+
 Автотесты перевода с карты на карту для SUT `app-ibank-build-for-testers.jar`.
 
 ## Структура
