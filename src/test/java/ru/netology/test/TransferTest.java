@@ -1,14 +1,14 @@
 package ru.netology.test;
 
-import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import ru.netology.data.AuthData;
 import ru.netology.page.DashboardPage;
 import ru.netology.page.LoginPage;
 import ru.netology.page.TransferPage;
+import ru.netology.page.VerificationPage;
 
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,8 +23,8 @@ class TransferTest {
     void setUp() {
         open("http://localhost:9999");
         LoginPage loginPage = new LoginPage();
-        loginPage.login("vasya", "qwerty123");
-        loginPage.enterVerificationCode("12345");
+        VerificationPage verificationPage = loginPage.login(AuthData.LOGIN, AuthData.PASSWORD);
+        verificationPage.verify(AuthData.VERIFICATION_CODE);
         dashboardPage = new DashboardPage();
         dashboardPage.waitForDashboard();
     }
@@ -58,7 +58,6 @@ class TransferTest {
         TransferPage transferPage = new TransferPage();
         transferPage.transfer(CARD_2, balance2Before + 5000);
 
-        // Ожидаем ошибку, но SUT её не показывает — баг
-        $("[data-test-id='error-notification']").shouldBe(Condition.visible);
+        transferPage.waitForError();
     }
 }
